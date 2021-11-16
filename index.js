@@ -6,6 +6,7 @@ const fileRouter=require("./routes/files")
 const showRouter=require('./routes/show')
 const downloadRoute=require('./routes/download')
 const path=require('path')
+const cors=require('cors')
 
 app.use(express.static('public'))
 app.use(express.json())
@@ -13,6 +14,11 @@ app.set('views',path.join(__dirname,'/views'))
 app.set('view engine','ejs')
 connectDB()
 
+//COrs
+const corsOptions={
+    origin:process.env.ALLOW_CLIENTS.split(',')
+}
+app.use(cors(corsOptions))
 const PORT=process.env.PORT||3000;
 app.use('/api/files/',fileRouter)
 app.use('/files/',showRouter)
