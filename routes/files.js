@@ -22,7 +22,6 @@ router.post('/', async(req,res)=>{
       //validate request
       // Store File
       upload(req,res,async(err)=>{
-        if(!req.file) return res.status(400).json({error:'All field are required'})
 
         if(err) return res.status(500).json({error:err})
       //Store into Database
