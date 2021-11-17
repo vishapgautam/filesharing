@@ -16,7 +16,7 @@ connectDB()
 
 //COrs
 const corsOptions={
-    origin:process.env.ALLOW_CLIENTS.split(',')
+    origin:process.env.ALLOWEW_CLIENTS.split(',')
 }
 app.use(cors(corsOptions))
 const PORT=process.env.PORT||3000;
