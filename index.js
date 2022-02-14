@@ -1,23 +1,40 @@
-const express=require("express")
-const connectDB=require('./config/mongodb')
-require('dotenv').config()
-const app=express()
-const fileRouter=require("./routes/files")
-const showRouter=require('./routes/show')
-const downloadRoute=require('./routes/download')
-const path=require('path')
+require('dotenv').config();
+const express = require('express');
+const app = express();
+const PORT = process.env.PORT || 3000;
+const path = require('path');
+const cors = require('cors');
 
-app.use(express.static('public'))
-app.use(express.json())
-app.set('views',path.join(__dirname,'/views'))
-app.set('view engine','ejs')
-connectDB()
+const connectDB = require('./config/mongodb');
+connectDB();
 
-const PORT=process.env.PORT||3000;
-app.use('/api/files/',fileRouter)
-app.use('/files/',showRouter)
-app.use('/files/download/',downloadRoute)
+// Cors 
+const corsOptions = {
+  origin: process.env.ALLOWED_CLIENTS.split(',')
+  // ['http://localhost:3000', 'http://localhost:5000', 'http://localhost:3300']
+}
 
-app.listen(PORT,()=>{
-    console.log(`Server is listining on port ${PORT}....`)
-})
+// Default configuration looks like
+// {
+//     "origin": "*",
+//     "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
+//     "preflightContinue": false,
+//     "optionsSuccessStatus": 204
+//   }
+
+app.use(cors(corsOptions))
+app.use(express.static('public'));
+app.use(express.json());
+app.set('views', path.join(__dirname, '/views'));
+app.set('view engine', 'ejs');
+
+
+
+// Routes 
+app.use('/api/files', require('./routes/files'));
+app.use('/files', require('./routes/show'));
+app.use('/files/download', require('./routes/download'));
+app.use('/',require('./routes/frontRoute'))
+
+
+app.listen(PORT, console.log(`Listening on port ${PORT}.`));
