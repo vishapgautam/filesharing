@@ -17,6 +17,7 @@ async function sendMail({from,to,subject,text,html}){
      text:text,
      html:html
  })
+ 
 
 }
 

@@ -17,7 +17,7 @@ let upload = multer({ storage, limits:{ fileSize: 1000000 * 100 }, }).single('my
 router.post('/', (req, res) => {
     upload(req, res, async (err) => {
       if (err) {
-        return res.status(500).send({ error: err });
+        return res.status(500).send({ error: err.message });
       }
         const file = new File({
             filename: req.file.filename,
@@ -45,7 +45,7 @@ router.post('/send', async (req, res) => {
     file.receiver = emailTo;
     const response = await file.save();
     // send mail
-    const sendMail = require('../services/mailService');
+    const sendMail = require('../services/emailService');
     sendMail({
       from: emailFrom,
       to: emailTo,
